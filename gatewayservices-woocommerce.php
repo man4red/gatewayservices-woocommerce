@@ -3,7 +3,7 @@
  * Plugin Name: Woocommerce GatewayServices Redirect
  * Plugin URI: https://gateway-services.com/
  * Description: Woocommerce payment module for use with https://gateway-services.com
- * Version: 1.0.3
+ * Version: 1.0.4
  * WC requires at least: 3.0
  * WC tested up to: 4.3
  * Text Domain: woocommerce-gateway-services
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Required minimums and constants
  */
-define( 'GWS_WC_VERSION', '1.0.3' );
+define( 'GWS_WC_VERSION', '1.0.4' );
 define( 'GWS_WC_MIN_PHP_VER', '5.6.0' );
 define( 'GWS_WC_MIN_WC_VER', '3.0' );
 define( 'GWS_WC_FUTURE_MIN_WC_VER', '3.0' );
@@ -106,7 +106,7 @@ function gws_wc_init()
 			 * Init the plugin after plugins_loaded so environment variables are set.
 			 *
 			 * @since 1.0.0
-             * @version 1.0.3
+             * @version 1.0.4
 			 */
 			public function init() {
                 require_once dirname( __FILE__ ) . '/includes/class-gws-wc-helper.php';
@@ -126,7 +126,7 @@ function gws_wc_init()
 			 * Updates the plugin version in db
 			 *
 			 * @since 1.0.0
-             * @version 1.0.3
+             * @version 1.0.4
 			 */
 			public function update_plugin_version() {
 				delete_option( 'gws_wc_version' );
@@ -137,7 +137,7 @@ function gws_wc_init()
 			 * Handles upgrade routines.
 			 *
 			 * @since 1.0.0
-             * @version 1.0.3
+             * @version 1.0.4
 			 */
 			public function install() {
 				if ( ! is_plugin_active( plugin_basename( __FILE__ ) ) ) {
@@ -159,7 +159,7 @@ function gws_wc_init()
 			 * Add the gateways to WooCommerce.
 			 *
 			 * @since 1.0.0
-             * @version 1.0.3
+             * @version 1.0.4
 			 */
 			public function add_gateways( $methods ) {
                 $methods[] = 'GWS_WC_Gateway';

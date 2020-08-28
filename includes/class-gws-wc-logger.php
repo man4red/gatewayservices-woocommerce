@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Log all things!
  *
  * @since 1.0.0
- * @version 1.0.3
+ * @version 1.0.4
  */
 class GWS_WC_Logger {
 
@@ -18,7 +18,7 @@ class GWS_WC_Logger {
 	 * Utilize WC logger class
 	 *
 	 * @since 1.0.0
-	 * @version 1.0.3
+	 * @version 1.0.4
 	 */
 	public static function log( $message, $start_time = null, $end_time = null ) {
 		if ( ! class_exists( 'WC_Logger' ) ) {
