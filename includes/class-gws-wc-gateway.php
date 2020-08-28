@@ -44,7 +44,6 @@ class GWS_WC_Gateway extends GWS_Payment_Gateway {
             if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
             {
                 /* special ajax here */
-
             }
             else
             {
@@ -163,9 +162,12 @@ class GWS_WC_Gateway extends GWS_Payment_Gateway {
         $signature_key = trim($this->private_key . $this->api_password . $TransactionId);
         $signature = base64_encode(hash_hmac("sha256", trim($xmlReq), $signature_key, True));
         $encodedMessage = base64_encode($xmlReq);
-        $params = array('version' => '1.0',
+        // form post params
+        $params = array(
+            'version' => '1.0',
             'encodedMessage' => $encodedMessage,
-            'signature' => $signature);
+            'signature' => $signature
+        );
 
         GWS_WC_Logger::log("DEBUG: Configuring GWS_PARAMS: " . PHP_EOL . print_r($params, TRUE));
         update_post_meta($order->get_id(), 'GWS_PARAMS', $params);
@@ -189,23 +191,6 @@ class GWS_WC_Gateway extends GWS_Payment_Gateway {
 
         <?php
         return ob_get_flush();
-    }
-
-    function response($str)
-    {
-        $response = array();
-        preg_match('#response.php\?inv=([\d]*)">#', $str, $inv);
-        if ($inv && isset($inv[1]) && $inv[1] != '') {
-            $response['invoice'] = $inv[1];
-        }
-
-        preg_match('#name="encodedMessage" value="(.*)"#Usi', $str, $data);
-        if ($data && isset($data[1]) && $data[1] != '') {
-            $xml = base64_decode($data[1]);
-            $xmlobj = simplexml_load_string($xml);
-            $response['data'] = $xmlobj;
-        }
-        return $response;
     }
 
     function checkSignature($data) {
@@ -234,8 +219,7 @@ class GWS_WC_Gateway extends GWS_Payment_Gateway {
 		return $result;
     }
 
-    function finalize_order()
-    {
+    function finalize_order() {
         global $woocommerce;
 
         if (isset($_GET['gws_trans']) && $_GET['gws_trans'] != '' && isset($_GET['order']) && $_GET['order'] != '') {
@@ -276,18 +260,15 @@ class GWS_WC_Gateway extends GWS_Payment_Gateway {
                     exit();
                 } elseif ((string)$result->PaymentStatus != 'APPROVED') {
                     $error = __('Payment Error: ' . (string)$result->Description . ' (' . (string)$result->Code . ')', 'woothemes');
-                    GWS_WC_Logger::log("ERROR: Unknown Payment Error" . (string)$result->Description . " (" . (string)$result->Code . ")");
+                    GWS_WC_Logger::log("ERROR: Unknown Payment Error " . (string)$result->Description . " (" . (string)$result->Code . ")");
                 }
             } else {
                 $error = __('Unknown Payment Error, please try again', 'woothemes');
                 GWS_WC_Logger::log("ERROR: Unknown Payment Error");
             }
-
-            if ($error != '') {
-                wp_redirect(add_query_arg('gws_error', urlencode($error), get_permalink(woocommerce_get_page_id('checkout'))));
-                exit();
-            }
         }
-        return true;
+
+        // final redirect
+        wp_redirect(add_query_arg('gws_error', urlencode($error), get_permalink(woocommerce_get_page_id('checkout'))));
     }
 }
