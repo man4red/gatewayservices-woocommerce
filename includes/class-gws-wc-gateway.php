@@ -93,7 +93,7 @@ class GWS_WC_Gateway extends GWS_Payment_Gateway {
                 $productInstance = wc_get_product($productId);
                 $productShortDescription[] = $productInstance->get_short_description();
             }
-            $productShortDescription = mb_substr(implode(", ", $productShortDescription), 0, 255, 'UTF-8');
+            $productShortDescription = mb_substr(implode(", ", $productShortDescription), 0, 50, 'UTF-8');
             
         } catch (Exception $e) {
             // TODO: catch me
