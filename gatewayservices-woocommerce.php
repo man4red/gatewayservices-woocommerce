@@ -22,8 +22,6 @@ define( 'GWS_WC_MIN_WC_VER', '3.0' );
 define( 'GWS_WC_FUTURE_MIN_WC_VER', '3.0' );
 define( 'GWS_WC_PLUGIN_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 
-//if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) return;
-
 function woocommerce_gws_missing_wc_notice() {
 	/* translators: 1. URL link. */
 	echo '<div class="error"><p><strong>' . sprintf( esc_html__( 'GatewayServices requires WooCommerce to be installed and active. You can download %s here.', 'woocommerce-gateway-services' ), '<a href="https://woocommerce.com/" target="_blank">WooCommerce</a>' ) . '</strong></p></div>';
