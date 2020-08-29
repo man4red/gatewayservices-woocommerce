@@ -35,22 +35,9 @@ class GWS_WC_Gateway extends GWS_Payment_Gateway {
         add_action('woocommerce_receipt_gwsprocessing', array($this, 'finalize_order'), 0);
 
         // this is a special API hook which fires webhook method
-        // available by SITE_URL/?wc-api=gatewayservices_signature
-        add_action( 'woocommerce_api_' . $this->id . '_signature', array($this, 'webhook' ), 99, 1);
         add_action( 'woocommerce_receipt_' . $this->id, array($this,'pay_for_order'), 0);
 
-        if(isset($_GET['gws_error']) &&  $_GET['gws_error'] != '')
-        {
-            if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
-            {
-                /* special ajax here */
-            }
-            else
-            {
-                wc_add_notice($_GET['gws_error'],'error');
-            }
-        }
-        else if(isset($_GET['order']) && !isset($_GET['gws_trans']))
+        if(isset($_GET['order']) && !isset($_GET['gws_trans']))
         {
             $this->receipt_page($_GET['order']);
         }
@@ -58,12 +45,6 @@ class GWS_WC_Gateway extends GWS_Payment_Gateway {
         {
             $this->finalize_order();
         }
-    }
-
-    function webhook($order_id) {
-        header( 'HTTP/1.1 200 OK' );
-        GWS_WC_Logger::log("DEBUG: WEBHOOK_SIGNATURE $order_id");
-        exit;
     }
 
 	/**
@@ -184,10 +165,6 @@ class GWS_WC_Gateway extends GWS_Payment_Gateway {
             <input type="hidden" name="signature" value="<?php echo $signature; ?>">
             <button id="my-gws-pay" type="submit">PAY</button>
         </form>
-        <script type="text/javascript">
-            //(function($) {
-            //})(jQuery);
-        </script>
 
         <?php
         return ob_get_flush();

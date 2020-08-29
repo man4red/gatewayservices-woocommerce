@@ -3,7 +3,7 @@
  * Plugin Name: Woocommerce GatewayServices Redirect
  * Plugin URI: https://gateway-services.com/
  * Description: Woocommerce payment module for use with https://gateway-services.com
- * Version: 1.0.4
+ * Version: 1.0.5
  * WC requires at least: 3.0
  * WC tested up to: 4.3
  * Text Domain: woocommerce-gateway-services
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Required minimums and constants
  */
-define( 'GWS_WC_VERSION', '1.0.4' );
+define( 'GWS_WC_VERSION', '1.0.5' );
 define( 'GWS_WC_MIN_PHP_VER', '5.6.0' );
 define( 'GWS_WC_MIN_WC_VER', '3.0' );
 define( 'GWS_WC_FUTURE_MIN_WC_VER', '3.0' );
