@@ -72,7 +72,7 @@ class GWS_WC_Gateway extends GWS_Payment_Gateway {
             foreach ($order->get_items() as $item) {
                 $productId = $item['product_id'];
                 $productInstance = wc_get_product($productId);
-                $productShortDescription[] = $productInstance->get_short_description();
+                $productShortDescription[] = trim(strip_tags($productInstance->get_short_description()));
             }
             $productShortDescription = mb_substr(implode(", ", $productShortDescription), 0, 50, 'UTF-8');
             
@@ -91,6 +91,13 @@ class GWS_WC_Gateway extends GWS_Payment_Gateway {
         $return_url = add_query_arg('order', $order->get_id(), add_query_arg('key', $order->get_order_key(), $order->get_checkout_order_received_url()));
         list($return_url,$query) = explode('?',$return_url);
         $vars = explode('&',$query);
+
+        $phone = trim($order->get_billing_phone());
+
+        // Set phone to 000000 if it's empty
+        if (empty($phone)) {
+            $phone = "000000";
+        }
 
         $xmlReq = '<?xml version="1.0" encoding="UTF-8" ?>
         <TransactionRequest>
@@ -126,7 +133,7 @@ class GWS_WC_Gateway extends GWS_Payment_Gateway {
                 <FirstName>' . $order->get_billing_first_name() . '</FirstName>
                 <LastName>' . $order->get_billing_last_name() . '</LastName>
                 <CustomerIP>' . WC_GWS_Helper::get_ip() . '</CustomerIP>
-                <Phone>' . $order->get_billing_phone() . '</Phone>
+                <Phone>' . $phone . '</Phone>
                 <Email>' . $order->get_billing_email() . '</Email>
                 <Street>' . $order->get_billing_address_1() . '</Street>
                 <City>' . $order->get_billing_city() . '</City>
